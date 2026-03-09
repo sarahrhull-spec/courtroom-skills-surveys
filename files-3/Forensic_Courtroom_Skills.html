@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Courtroom Skills Refresher — Forensic</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --ink: #1a1a2e; --mid: #4a4a6a; --soft: #8888aa; --rule: #dddde8;
+    --bg: #f7f7fc; --card: #ffffff; --accent: #2d5a8e;
+    --accent-light: #e8f0f9; --gold: #c09a3c; --green: #2e7d5e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; font-size: 15px; line-height: 1.6; }
+
+  .nav { background: var(--ink); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; height: 56px; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-family: 'DM Serif Display', serif; color: #fff; font-size: 17px; letter-spacing: 0.02em; }
+  .nav-brand span { color: var(--gold); }
+  .nav-info { font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; }
+
+  .form-wrap { max-width: 760px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .form-header { text-align: center; margin-bottom: 48px; padding: 40px 40px 36px; background: var(--card); border-radius: 12px; border-top: 4px solid var(--accent); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .form-header h1 { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--ink); margin-bottom: 6px; }
+  .form-header .subtitle { font-size: 14px; color: var(--soft); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+  .form-header p { font-size: 14px; color: var(--mid); max-width: 520px; margin: 0 auto; }
+
+  .section-card { background: var(--card); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 28px; overflow: hidden; }
+  .section-head { background: var(--ink); color: #fff; padding: 14px 28px; display: flex; align-items: center; gap: 12px; }
+  .section-letter { background: var(--gold); color: var(--ink); font-weight: 700; font-size: 13px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-head h2 { font-family: 'DM Serif Display', serif; font-size: 18px; font-weight: 400; }
+  .section-body { padding: 28px; }
+
+  .q-block { margin-bottom: 28px; }
+  .q-block:last-child { margin-bottom: 0; }
+  .q-label { font-weight: 600; font-size: 14px; color: var(--ink); margin-bottom: 4px; display: block; }
+  .q-id { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 6px; }
+  .q-hint { font-size: 13px; color: var(--soft); margin-bottom: 10px; font-style: italic; }
+
+  .opt-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .opt-pill { display: flex; align-items: center; gap: 7px; background: var(--bg); border: 1.5px solid var(--rule); border-radius: 6px; padding: 7px 14px; cursor: pointer; font-size: 13.5px; color: var(--mid); transition: all 0.15s; user-select: none; }
+  .opt-pill:hover { border-color: var(--accent); color: var(--ink); background: var(--accent-light); }
+  .opt-pill input { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; }
+  .opt-pill.checked { background: var(--accent-light); border-color: var(--accent); color: var(--ink); font-weight: 500; }
+
+  .follow-up { margin-top: 12px; padding: 16px 18px; background: var(--bg); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; display: none; }
+  .follow-up.show { display: block; }
+  .follow-up .q-label { font-size: 13px; font-weight: 500; }
+
+  .likert-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13.5px; }
+  .likert-table th { text-align: center; font-size: 12px; font-weight: 600; color: var(--soft); padding: 6px 4px 12px; white-space: nowrap; }
+  .likert-table th:first-child { text-align: left; padding-left: 0; width: 50%; }
+  .likert-table td { text-align: center; padding: 10px 4px; border-top: 1px solid var(--rule); }
+  .likert-table td:first-child { text-align: left; padding-left: 0; color: var(--ink); font-size: 13px; }
+  .likert-table tr:hover td { background: var(--bg); }
+  .likert-table input[type=radio] { width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer; }
+
+  textarea, input[type=text] { width: 100%; border: 1.5px solid var(--rule); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--ink); padding: 10px 14px; background: var(--bg); resize: vertical; transition: border-color 0.15s; margin-top: 8px; }
+  textarea:focus, input[type=text]:focus { outline: none; border-color: var(--accent); background: #fff; }
+  .divider { border: none; border-top: 1px solid var(--rule); margin: 24px 0; }
+
+  .submit-wrap { text-align: center; margin-top: 36px; }
+  .btn-submit { background: var(--accent); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; padding: 14px 48px; border: none; border-radius: 8px; cursor: pointer; letter-spacing: 0.03em; transition: all 0.2s; box-shadow: 0 4px 16px rgba(45,90,142,0.25); }
+  .btn-submit:hover { background: #1e4070; transform: translateY(-1px); }
+  .submit-note { font-size: 12px; color: var(--soft); margin-top: 10px; }
+
+  .success-screen { display: none; max-width: 560px; margin: 80px auto; text-align: center; background: var(--card); border-radius: 16px; padding: 56px 40px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 4px solid var(--green); }
+  .success-screen .tick { font-size: 48px; margin-bottom: 16px; }
+  .success-screen h2 { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--green); margin-bottom: 10px; }
+  .success-screen p { font-size: 14px; color: var(--mid); }
+
+  @media (max-width: 600px) { .nav { padding: 0 16px; } .form-wrap { padding: 24px 14px 60px; } .section-body { padding: 18px; } }
+
+
+/* ── DASHBOARD ── */
+  .dash-wrap { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  .dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 12px; }
+  .dash-header h1 { font-family: 'DM Serif Display', serif; font-size: 26px; }
+  .dash-meta { font-size: 13px; color: var(--soft); }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: var(--card); border-radius: 10px; padding: 20px 20px 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-top: 3px solid var(--accent); }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--soft); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 6px; }
+
+  .dash-section { background: var(--card); border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 24px; overflow: hidden; }
+  .dash-section-head { padding: 16px 24px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 10px; }
+  .dash-section-head h3 { font-family: 'DM Serif Display', serif; font-size: 17px; font-weight: 400; }
+  .badge { background: var(--accent-light); color: var(--accent); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .dash-section-body { padding: 20px 24px; }
+
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px; }
+  .bar-label { flex: 0 0 220px; color: var(--mid); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-track { flex: 1; background: var(--bg); border-radius: 4px; height: 20px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.6s ease; min-width: 2px; }
+  .bar-count { flex: 0 0 32px; text-align: right; font-weight: 600; color: var(--ink); font-size: 13px; }
+  .bar-pct { flex: 0 0 40px; text-align: right; color: var(--soft); font-size: 12px; }
+
+  .likert-dash { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .likert-dash th { padding: 6px 8px; text-align: center; font-size: 11px; font-weight: 600; color: var(--soft); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--rule); }
+  .likert-dash th:first-child { text-align: left; width: 42%; }
+  .likert-dash td { padding: 9px 8px; text-align: center; border-bottom: 1px solid var(--rule); }
+  .likert-dash td:first-child { text-align: left; color: var(--ink); font-size: 12.5px; }
+  .likert-dash tr:last-child td { border-bottom: none; }
+  .heat-cell { border-radius: 4px; font-weight: 600; font-size: 12px; padding: 3px 6px; display: inline-block; min-width: 32px; }
+  .avg-cell { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--accent); }
+
+  .text-response { background: var(--bg); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 12px 16px; margin-bottom: 10px; font-size: 13.5px; color: var(--mid); font-style: italic; }
+  .text-response:last-child { margin-bottom: 0; }
+
+  .no-data { text-align: center; padding: 60px 40px; }
+  .no-data strong { display: block; font-size: 20px; margin-bottom: 8px; color: var(--mid); font-family: 'DM Serif Display', serif; }
+  .no-data p { font-size: 14px; color: var(--soft); }
+
+  .tool-row { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; align-items: center; }
+  .btn-action { background: var(--ink); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 9px 20px; border: none; border-radius: 6px; cursor: pointer; transition: background 0.15s; }
+  .btn-action:hover { background: var(--accent); }
+  .btn-danger { background: none; border: 1.5px solid var(--rule); color: var(--mid); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 6px; cursor: pointer; transition: all 0.15s; }
+  .btn-danger:hover { border-color: var(--red); color: var(--red); }
+
+  .resp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .resp-table th { background: var(--bg); padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--soft); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--rule); white-space: nowrap; }
+  .resp-table td { padding: 10px 12px; border-bottom: 1px solid var(--rule); color: var(--mid); vertical-align: top; }
+  .resp-table tr:last-child td { border-bottom: none; }
+  .resp-table tr:hover td { background: var(--bg); }
+
+  @media (max-width: 600px) { .nav { padding: 0 16px; } .dash-wrap { padding: 24px 14px 60px; } .bar-label { flex: 0 0 130px; } }
+
+
+  /* ── Tab bar ── */
+  .tab-bar { background: var(--ink); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; height: 56px; position: sticky; top: 0; z-index: 100; }
+  .tab-brand { font-family: 'DM Serif Display', serif; color: #fff; font-size: 17px; letter-spacing: 0.02em; }
+  .tab-brand span { color: var(--gold); }
+  .tab-buttons { display: flex; gap: 4px; align-items: center; }
+  .tab-btn { background: none; border: none; color: rgba(255,255,255,0.55); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 6px 16px; border-radius: 4px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em; text-transform: uppercase; }
+  .tab-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .tab-btn.active { background: var(--accent); color: #fff; }
+  .btn-lock-sm { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); font-family: 'DM Sans', sans-serif; font-size: 11px; padding: 4px 12px; border-radius: 20px; cursor: pointer; transition: all 0.15s; margin-left: 8px; }
+  .btn-lock-sm:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+  /* ── Tab views — defined ONCE here, do not repeat ── */
+  .view { display: none !important; }
+  .view.active { display: block !important; }
+
+  /* ── Login modal ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 500; align-items: center; justify-content: center; }
+  .modal-overlay.show { display: flex; }
+  .modal-box { background: #fff; border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); text-align: center; }
+  .modal-box .lock { font-size: 40px; margin-bottom: 16px; }
+  .modal-box h2 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 6px; }
+  .modal-box p { font-size: 13px; color: var(--soft); margin-bottom: 28px; }
+  .modal-box input[type=password] { width: 100%; border: 2px solid var(--rule); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 15px; padding: 12px 16px; text-align: center; letter-spacing: 0.2em; color: var(--ink); background: var(--bg); transition: border-color 0.15s; margin-bottom: 14px; }
+  .modal-box input[type=password]:focus { outline: none; border-color: var(--accent); background: #fff; }
+  .modal-box input[type=password].error { border-color: var(--red); animation: shake 0.3s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+  .btn-login { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; padding: 13px; cursor: pointer; transition: background 0.2s; }
+  .btn-login:hover { background: #1e4070; }
+  .login-err { font-size: 13px; color: var(--red); margin-top: 10px; min-height: 18px; }
+  .login-hint { font-size: 11px; color: var(--soft); margin-top: 16px; }
+  .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .submit-loading { opacity: 0.7; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal-box">
+    <div class="lock">🔒</div>
+    <h2>Facilitator Access</h2>
+    <p>This dashboard is for training facilitators only.<br>Enter your access password to continue.</p>
+    <input type="password" id="pw-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="btn-login" onclick="checkPw()">Access Dashboard</button>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-hint">Contact your training lead if you need the password.</div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-brand">Forensic Scientist <span>Courtroom Skills</span></div>
+  <div class="tab-buttons">
+    <button class="tab-btn active" id="tab-form" onclick="showTab('form')">Survey Form</button>
+    <button class="tab-btn" id="tab-dash" onclick="requestDash()">Results Dashboard</button>
+    <button class="btn-lock-sm" id="lock-btn" style="display:none" onclick="lockDash()">Lock</button>
+  </div>
+</div>
+
+<!-- FORM VIEW -->
+<div id="view-form" class="view active">
+<div id="form-area">
+<div class="form-wrap">
+
+  <div class="form-header">
+    <div class="subtitle">Pre-Training Questionnaire</div>
+    <h1>Courtroom Skills Refresher</h1>
+    <p>Your responses will be used to tailor teaching content. Anonymised responses may be used for teaching and research purposes.</p>
+  </div>
+
+  <form id="mainForm">
+
+    <!-- SECTION A -->
+    <div class="section-card">
+      <div class="section-head"><div class="section-letter">A</div><h2>About You</h2></div>
+      <div class="section-body">
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">A1</span>Name (optional)</label>
+          <input type="text" name="a1_name" placeholder="Your name">
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">A2</span>Job title / grade</label>
+          <input type="text" name="a2_title" placeholder="e.g. Forensic Scientist, Senior Reporting Officer, Expert Witness">
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">A3</span>How long have you been in your current role?</label>
+          <div class="opt-row" id="a3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION B -->
+    <div class="section-card">
+      <div class="section-head"><div class="section-letter">B</div><h2>Court Experience</h2></div>
+      <div class="section-body">
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">B1</span>How many times have you given evidence in court in your career?</label>
+          <div class="opt-row" id="b1"></div>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">B2</span>When did you last give evidence in court?</label>
+          <div class="opt-row" id="b2"></div>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">B3</span>Have you ever been inside a courtroom — whether to give evidence or observe proceedings?</label>
+          <div class="opt-row" id="b3"></div>
+          <div class="follow-up" id="b3-follow">
+            <label class="q-label">If no — have you had any other opportunity to observe court proceedings (e.g. as a student, trainee, or observer)?</label>
+            <div class="opt-row" id="b3b"></div>
+          </div>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">B4</span>Have you ever given evidence remotely (e.g. by video link or Cloud Video Platform)?</label>
+          <div class="opt-row" id="b4"></div>
+          <div class="follow-up" id="b4-follow">
+            <label class="q-label">If yes — how many times have you given evidence remotely?</label>
+            <div class="opt-row" id="b4b"></div>
+          </div>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">B5</span>If you have experience of both, do you prefer giving evidence in person or remotely?</label>
+          <div class="opt-row" id="b5"></div>
+          <div class="follow-up show" id="b5-follow">
+            <label class="q-label">Please tell us why — what feels easier or harder about each?</label>
+            <textarea name="b5_why" rows="3" placeholder="Your thoughts…"></textarea>
+          </div>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">B6</span>Which courts have you given evidence in? <em class="q-hint">(tick all that apply)</em></label>
+          <div class="opt-row" id="b6"></div>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">B7</span>What type of cases have you most commonly given evidence in? <em class="q-hint">(tick all that apply)</em></label>
+          <div class="opt-row" id="b7"></div>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">B8</span>Have you ever been subject to particularly challenging or aggressive cross-examination?</label>
+          <div class="opt-row" id="b8"></div>
+          <div class="follow-up" id="b8-follow">
+            <label class="q-label">Briefly describe what made it difficult:</label>
+            <textarea name="b8_detail" rows="3" placeholder="Optional details…"></textarea>
+          </div>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">B9</span>Have you ever had a case outcome that you felt was affected by how evidence was presented in court (including your own)?</label>
+          <div class="opt-row" id="b9"></div>
+          <div class="follow-up" id="b9-follow">
+            <label class="q-label">If yes, and if you are comfortable sharing, briefly describe:</label>
+            <textarea name="b9_detail" rows="3" placeholder="Optional details…"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION C -->
+    <div class="section-card">
+      <div class="section-head"><div class="section-letter">C</div><h2>Confidence Levels</h2></div>
+      <div class="section-body">
+        <p class="q-hint" style="margin-bottom:14px">Rate your current confidence: 1 = not at all confident → 5 = very confident</p>
+        <table class="likert-table">
+          <thead>
+            <tr>
+              <th>Skill Area</th>
+              <th>1<br><span style="font-weight:400;font-style:italic">Low</span></th>
+              <th>2</th><th>3</th><th>4</th>
+              <th>5<br><span style="font-weight:400;font-style:italic">High</span></th>
+            </tr>
+          </thead>
+          <tbody id="likert-body"></tbody>
+        </table>
+        <hr class="divider">
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">C2</span>Overall, how anxious do you feel about giving evidence in court?</label>
+          <div class="opt-row" id="c2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION D -->
+    <div class="section-card">
+      <div class="section-head"><div class="section-letter">D</div><h2>Specific Concerns</h2></div>
+      <div class="section-body">
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">D1</span>Which of the following concerns you most about giving evidence? <em class="q-hint">(tick all that apply)</em></label>
+          <div class="opt-row" id="d1"></div>
+          <div class="follow-up" id="d1-other-follow">
+            <label class="q-label" style="display:flex;align-items:center;gap:6px">
+              Please specify: <span style="color:var(--red);font-size:13px">*&nbsp;required</span>
+            </label>
+            <textarea name="d1_other" id="d1_other" rows="2" placeholder="Please describe your other concern…"></textarea>
+          </div>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">D2</span>Is there a specific situation, question type, or aspect of court that you find particularly difficult?</label>
+          <textarea name="d2" rows="4" placeholder="Describe any specific difficulties…"></textarea>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">D3</span>Have you ever left court feeling that you did not give your best evidence? If so, what do you think got in the way?</label>
+          <textarea name="d3" rows="4" placeholder="Optional reflection…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION E -->
+    <div class="section-card">
+      <div class="section-head"><div class="section-letter">E</div><h2>Experience &amp; Learning Needs</h2></div>
+      <div class="section-body">
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">E1</span>What previous training have you had around courtroom skills? <em class="q-hint">(tick all that apply)</em></label>
+          <div class="opt-row" id="e1"></div>
+          <div class="follow-up show" id="e1-follow">
+            <label class="q-label">If formal course or mentoring — please give brief details (provider, approximate date):</label>
+            <textarea name="e1_detail" rows="2" placeholder="e.g. Provider name, 2022…"></textarea>
+          </div>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">E2</span>Briefly describe a court experience — positive or negative — that has stayed with you. What happened and what did it teach you?</label>
+          <textarea name="e2" rows="5" placeholder="Optional — share as much or as little as you like…"></textarea>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">E3</span>What is the single most important thing you would like to get from the training session?</label>
+          <textarea name="e3" rows="3" placeholder="Your priority learning outcome…"></textarea>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">E4</span>Is there anything specific you would like the facilitator to cover or address during the session?</label>
+          <textarea name="e4" rows="3" placeholder="Any specific topics or questions…"></textarea>
+        </div>
+        <div class="q-block">
+          <label class="q-label"><span class="q-id">E5</span>Is there anything about your court experience or concerns that you would prefer to discuss privately with the facilitator rather than in the group?</label>
+          <div class="opt-row" id="e5"></div>
+          <p style="font-size:12px;color:var(--soft);margin-top:10px">If yes, the facilitator will make time to speak with you before or after the session.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANY OTHER COMMENTS -->
+    <div class="section-card">
+      <div class="section-head"><div class="section-letter">+</div><h2>Any Other Comments</h2></div>
+      <div class="section-body">
+        <div class="q-block">
+          <label class="q-label">Is there anything else you would like to share with the facilitator before the session?</label>
+          <textarea name="other_comments" rows="5" placeholder="Any other thoughts, questions, or information you feel is relevant…"></textarea>
+        </div>
+      </div>
+    </div>
+
+        <div class="submit-wrap">
+      <button type="button" class="btn-submit" onclick="submitForm()">Submit Questionnaire</button>
+      <div class="submit-note">Your responses will be used to tailor teaching content. Anonymised responses may be used for teaching and research purposes.</div>
+    </div>
+  </form>
+</div>
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="success-screen">
+  <div class="tick">✓</div>
+  <h2>Thank you</h2>
+  <p>Your questionnaire has been submitted. Your responses will help the facilitator tailor the session to the group's needs.</p>
+</div>
+</div>
+
+<!-- DASHBOARD VIEW -->
+<div id="view-dash" class="view">
+<div class="dash-wrap">
+  <div class="dash-header">
+    <div><h1>Results Dashboard</h1><div class="dash-meta" id="dash-meta">—</div></div>
+  </div>
+  <div class="tool-row">
+    <button class="btn-action" onclick="loadData()">↻ Refresh</button>
+    <button class="btn-action" onclick="exportCSV()">⬇ Export CSV</button>
+    <button class="btn-danger" onclick="clearData()">Clear all data</button>
+  </div>
+  <div id="dash-content"></div>
+</div>
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznQzhD40SVKiBQqk8ItK5mCFndCsrVI3LQJNuWTpFW2MFAWsx3Cj4Z6s4bn309CARK/exec';
+const FACILITATOR_PASSWORD = 'FORENSIC2025';
+
+// ── TAB & AUTH ────────────────────────────────────────────────────
+let dashUnlocked = false;
+let responses = [];
+
+function showTab(tab) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'dash') loadData();
+}
+
+function requestDash() {
+  if (dashUnlocked) { showTab('dash'); return; }
+  document.getElementById('login-modal').classList.add('show');
+  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+}
+
+function checkPw() {
+  const input = document.getElementById('pw-input');
+  const err = document.getElementById('login-err');
+  if (input.value === FACILITATOR_PASSWORD) {
+    dashUnlocked = true;
+    document.getElementById('login-modal').classList.remove('show');
+    document.getElementById('lock-btn').style.display = 'inline-block';
+    input.value = ''; err.textContent = '';
+    showTab('dash');
+  } else {
+    input.classList.add('error');
+    err.textContent = 'Incorrect password. Please try again.';
+    input.value = '';
+    setTimeout(() => input.classList.remove('error'), 400);
+  }
+}
+
+function lockDash() {
+  dashUnlocked = false;
+  document.getElementById('lock-btn').style.display = 'none';
+  showTab('form');
+}
+
+// ── FORM DATA ─────────────────────────────────────────────────────
+const RADIO = 'radio', CHECK = 'checkbox';
+
+const questions = {
+  a3:  { type: RADIO, opts: ['Less than 1 year','1–3 years','3–5 years','5–10 years','More than 10 years'] },
+  b1:  { type: RADIO, opts: ['Never','1–2 times','3–5 times','6–10 times','More than 10 times'] },
+  b2:  { type: RADIO, opts: ['Never','Within last 6 months','6–12 months ago','1–2 years ago','More than 2 years ago','More than 5 years ago'] },
+  b3:  { type: RADIO, opts: ['Yes','No'] },
+  b3b: { type: RADIO, opts: ['Yes','No'] },
+  b4:  { type: RADIO, opts: ['Yes','No'] },
+  b4b: { type: RADIO, opts: ['Once','2–3 times','4–5 times','More than 5 times'] },
+  b5:  { type: RADIO, opts: ['Strongly prefer in person','Slightly prefer in person','No preference','Slightly prefer remotely','Strongly prefer remotely','No experience of both'] },
+  b6:  { type: CHECK, opts: ['Crown Court','Magistrates\' Court','Coroner\'s Court','Family Court','Youth Court','Fatal Accident Inquiry','Public inquiry','Civil proceedings','Other'] },
+  b7:  { type: CHECK, opts: ['Sexual offences / rape','Serious violence / homicide','Domestic abuse','Drug offences','Road traffic / toxicology','Digital / cybercrime','Firearms / ballistics','Fire investigation','Financial crime / fraud','Other'] },
+  b8:  { type: RADIO, opts: ['Yes','No'] },
+  b9:  { type: RADIO, opts: ['Yes','No'] },
+  c2:  { type: RADIO, opts: ['Not anxious at all','Slightly anxious','Moderately anxious','Very anxious','Extremely anxious'] },
+  d1:  { type: CHECK, opts: ['Being cross-examined aggressively','Forgetting key details under pressure','Being asked questions outside my expertise','Appearing nervous or losing composure','Being made to look inconsistent','Not understanding legal procedure / terminology','Waiting to give evidence (pre-court anxiety)','Being challenged on my methodology or analytical approach','Being asked to comment on another expert\'s findings','Handling challenges to my laboratory procedures or quality assurance','Being asked to go beyond my area of expertise','Being criticised in court and the regulatory or professional implications for my practice','Media attention or public reporting of the case','Other'] },
+  e1:  { type: CHECK, opts: ['None','Formal training course','In-house / workplace training','Mentoring or coaching','Observed a colleague in court','Self-directed learning (reading / online)','Other'] },
+  e5:  { type: RADIO, opts: ['Yes','No'] },
+};
+
+const likertItems = [
+  { key: 'c_oral',        label: 'Giving oral evidence clearly and concisely' },
+  { key: 'c_factop',      label: 'Distinguishing between fact and opinion in testimony' },
+  { key: 'c_crossx',      label: 'Handling cross-examination without becoming flustered' },
+  { key: 'c_composure',   label: 'Maintaining composure under sustained questioning' },
+  { key: 'c_notes',       label: 'Using notes / reports appropriately in the witness box' },
+  { key: 'c_dontknow',    label: 'Saying \"I don\'t know\" or \"I can\'t recall\" with confidence' },
+  { key: 'c_report',      label: 'Explaining your written report clearly to a lay audience' },
+  { key: 'c_methodology', label: 'Defending your methodology under challenge' },
+  { key: 'c_uncertainty', label: 'Explaining uncertainty, probability and statistical evidence' },
+  { key: 'c_likelihood',  label: 'Using and defending likelihood ratio or evaluative reporting' },
+  { key: 'c_qc',          label: 'Addressing challenges to laboratory procedures and quality assurance' },
+  { key: 'c_peerexpert',  label: 'Responding to challenges from a defence or opposing expert' },
+  { key: 'c_scope',       label: 'Maintaining the boundaries of your expertise under pressure' },
+  { key: 'c_chain',       label: 'Addressing chain of custody and continuity of exhibit questions' },
+  { key: 'c_disclosure',  label: 'Handling questions about disclosure of unused material' },
+];
+
+function buildOpts(id, name, type, opts, onchange) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  opts.forEach(o => {
+    const pill = document.createElement('label');
+    pill.className = 'opt-pill';
+    const inp = document.createElement('input');
+    inp.type = type; inp.name = name; inp.value = o;
+    if (onchange) inp.addEventListener('change', onchange);
+    inp.addEventListener('change', () => {
+      if (type === RADIO) el.querySelectorAll('.opt-pill').forEach(p => p.classList.remove('checked'));
+      pill.classList.toggle('checked', inp.checked);
+    });
+    pill.appendChild(inp);
+    pill.appendChild(document.createTextNode(o));
+    el.appendChild(pill);
+  });
+}
+
+function getVal(n) { const e = document.querySelector(`[name="${n}"]:checked`); return e ? e.value : null; }
+function getVals(n) { return [...document.querySelectorAll(`[name="${n}"]:checked`)].map(e => e.value); }
+function getTextVal(n) { const e = document.querySelector(`[name="${n}"]`); return e ? e.value.trim() : ''; }
+
+function init() {
+  buildOpts('a3','a3',RADIO,questions.a3.opts);
+  buildOpts('b1','b1',RADIO,questions.b1.opts);
+  buildOpts('b2','b2',RADIO,questions.b2.opts);
+  buildOpts('b3','b3',RADIO,questions.b3.opts, () => {
+    const v = getVal('b3');
+    const f = document.getElementById('b3-follow');
+    if (f) f.classList.toggle('show', v === 'No');
+  });
+  buildOpts('b3b','b3b',RADIO,questions.b3b.opts);
+  buildOpts('b4','b4',RADIO,questions.b4.opts, () => {
+    const v = getVal('b4');
+    const f = document.getElementById('b4-follow');
+    if (f) f.classList.toggle('show', v === 'Yes');
+  });
+  buildOpts('b4b','b4b',RADIO,questions.b4b.opts);
+  buildOpts('b5','b5',RADIO,questions.b5.opts);
+  buildOpts('b6','b6',CHECK,questions.b6.opts);
+  buildOpts('b7','b7',CHECK,questions.b7.opts);
+  buildOpts('b8','b8',RADIO,questions.b8.opts, () => {
+    const v = getVal('b8');
+    const f = document.getElementById('b8-follow');
+    if (f) f.classList.toggle('show', v === 'Yes');
+  });
+  buildOpts('b9','b9',RADIO,questions.b9.opts, () => {
+    const v = getVal('b9');
+    const f = document.getElementById('b9-follow');
+    if (f) f.classList.toggle('show', v === 'Yes');
+  });
+  buildOpts('c2','c2',RADIO,questions.c2.opts);
+  buildOpts('d1','d1',CHECK,questions.d1.opts, () => {
+    const otherChecked = [...document.querySelectorAll('[name="d1"]:checked')].some(e => e.value === 'Other');
+    const f = document.getElementById('d1-other-follow');
+    const inp = document.getElementById('d1_other');
+    if (f) f.classList.toggle('show', otherChecked);
+    if (inp) inp.required = otherChecked;
+  });
+  buildOpts('e1','e1',CHECK,questions.e1.opts);
+  buildOpts('e5','e5',RADIO,questions.e5.opts);
+  const tbody = document.getElementById('likert-body');
+  if (tbody) {
+    likertItems.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${item.label}</td>` +
+        [1,2,3,4,5].map(n => `<td><input type="radio" name="${item.key}" value="${n}"></td>`).join('');
+      tbody.appendChild(tr);
+    });
+  }
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────
+function submitForm() {
+  const btn = document.querySelector('.btn-submit');
+  btn.innerHTML = '<span class="spinner"></span>Submitting…';
+  btn.classList.add('submit-loading');
+
+  const rec = {
+    id: Date.now(), ts: new Date().toLocaleString(),
+    a1: getTextVal('a1_name'), a2: getTextVal('a2_title'), a3: getVal('a3'),
+    b1: getVal('b1'), b2: getVal('b2'), b3: getVal('b3'), b3b: getVal('b3b'),
+    b4: getVal('b4'), b4b: getVal('b4b'), b5: getVal('b5'), b5_why: getTextVal('b5_why'),
+    b6: getVals('b6').join('; '), b7: getVals('b7').join('; '),
+    b8: getVal('b8'), b8_detail: getTextVal('b8_detail'),
+    b9: getVal('b9'), b9_detail: getTextVal('b9_detail'), c2: getVal('c2'),
+    d1: getVals('d1').join('; '), d1_other: getTextVal('d1_other'),
+    d2: getTextVal('d2'), d3: getTextVal('d3'),
+    e1: getVals('e1').join('; '), e1_detail: getTextVal('e1_detail'),
+    e2: getTextVal('e2'), e3: getTextVal('e3'), e4: getTextVal('e4'), e5: getVal('e5'),
+    other_comments: getTextVal('other_comments'),
+  };
+  likertItems.forEach(item => { rec[item.key] = getVal(item.key) || ''; });
+
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(rec),
+  })
+  .then(() => {
+    document.getElementById('form-area').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  })
+  .catch(() => {
+    btn.innerHTML = 'Submit Questionnaire';
+    btn.classList.remove('submit-loading');
+    alert('Submission failed. Please check your internet connection and try again.');
+  });
+}
+
+// ── DASHBOARD DATA ────────────────────────────────────────────────
+function loadData() {
+  document.getElementById('dash-meta').textContent = 'Loading…';
+
+  // Use JSONP to avoid CORS issues with Google Apps Script
+  const callbackName = 'gasCallback_' + Date.now();
+  const script = document.createElement('script');
+
+  window[callbackName] = function(data) {
+    delete window[callbackName];
+    document.head.removeChild(script);
+    responses = Array.isArray(data) ? data : [];
+    renderAll();
+  };
+
+  script.onerror = function() {
+    delete window[callbackName];
+    document.head.removeChild(script);
+    document.getElementById('dash-meta').textContent = 'Error loading data — check Apps Script URL and deployment';
+    document.getElementById('dash-content').innerHTML =
+      '<div class="no-data"><strong>Could not load data</strong><p>Make sure the Apps Script is deployed as a Web App with access set to <em>Anyone</em>, then create a new deployment and update the URL.</p></div>';
+  };
+
+  script.src = APPS_SCRIPT_URL + '?action=get&callback=' + callbackName;
+  document.head.appendChild(script);
+}
+
+function clearData() {
+  if (!confirm('Permanently delete ALL responses from the Google Sheet? This cannot be undone.')) return;
+  fetch(APPS_SCRIPT_URL + '?action=clear')
+    .then(() => { responses = []; renderAll(); })
+    .catch(() => alert('Could not clear. Delete rows directly in Google Sheets.'));
+}
+
+// ── DASHBOARD RENDER ──────────────────────────────────────────────
+function renderAll() {
+  const n = responses.length;
+  document.getElementById('dash-meta').textContent = n === 0
+    ? 'No responses yet'
+    : `${n} response${n !== 1 ? 's' : ''} collected · Last updated ${new Date().toLocaleTimeString()}`;
+  const content = document.getElementById('dash-content');
+
+  if (n === 0) {
+    content.innerHTML = `<div class="no-data"><strong>No responses yet</strong><p>Responses submitted via <code>forensic_survey_form.html</code> in the same browser will appear here after a Refresh.</p></div>`;
+    return;
+  }
+
+  let html = '';
+
+  // Summary stats
+  html += `<div class="stat-grid">
+    <div class="stat-card"><div class="stat-num">${n}</div><div class="stat-label">Total Responses</div></div>
+    ${statCard('Never given evidence', responses.filter(r=>r.b1==='Never').length, n)}
+    ${statCard('Very / Extremely anxious', responses.filter(r=>r.c2==='Very anxious'||r.c2==='Extremely anxious').length, n)}
+    ${statCard('Want private discussion', responses.filter(r=>r.e5==='Yes').length, n)}
+    ${statCard('Aggressive cross-exam experience', responses.filter(r=>r.b8==='Yes').length, n)}
+  </div>`;
+
+  // ⚠️ Private discussion flag
+  const privateWanted = responses.filter(r => r.e5 === 'Yes');
+  if (privateWanted.length) {
+    html += `<div class="dash-section" style="border-left: 4px solid #c09a3c;">
+      <div class="dash-section-head"><span class="badge" style="background:#fff3cd;color:#856404">⚠ Action Required</span><h3>Respondents requesting private discussion (${privateWanted.length})</h3></div>
+      <div class="dash-section-body">
+        <table class="resp-table"><thead><tr><th>Name</th><th>Job Title</th><th>Submitted</th></tr></thead><tbody>
+        ${privateWanted.map(r=>`<tr><td>${r.a1||'<em>Anonymous</em>'}</td><td>${r.a2||'—'}</td><td>${r.ts}</td></tr>`).join('')}
+        </tbody></table>
+      </div></div>`;
+  }
+
+  html += dashSection('B', 'Court Experience', [barChart('b1'), barChart('b2'), barChart('b3'), barChart('b4'), barChart('b5')]);
+  html += dashSection('B', 'Courts &amp; Case Types', [checkChart('b6'), checkChart('b7')]);
+  html += dashSection('B', 'Cross-examination &amp; Outcomes', [barChart('b8'), barChart('b9')]);
+  html += dashSection('C', 'Confidence — Skill Ratings', [likertDash()]);
+  html += dashSection('C', 'Overall Court Anxiety', [barChart('c2')]);
+  html += dashSection('D', 'Key Concerns', [checkChart('d1')]);
+  html += dashSection('E', 'Prior Training', [checkChart('e1')]);
+
+  html += textSection('D1', 'Other concerns (free text)', 'd1_other');
+  html += textSection('D2', 'Specific difficulties', 'd2');
+  html += textSection('D3', 'Left court without giving best evidence', 'd3');
+  html += textSection('E3', 'Most important training goal', 'e3');
+  html += textSection('E4', 'Topics for facilitator to address', 'e4');
+  html += textSection('B5', 'In person vs remote — reasons', 'b5_why');
+  html += textSection('+', 'Any other comments', 'other_comments');
+  html += textSection('E2', 'Memorable court experience', 'e2');
+
+  // Individual responses
+  html += `<div class="dash-section">
+    <div class="dash-section-head"><span class="badge">All</span><h3>Individual Responses</h3></div>
+    <div class="dash-section-body" style="overflow-x:auto">
+      <table class="resp-table"><thead><tr>
+        <th>#</th><th>Name</th><th>Title</th><th>Submitted</th>
+        <th>Times given evidence</th><th>Anxiety</th><th>Wants private chat</th>
+      </tr></thead><tbody>
+      ${responses.map((r,i)=>`<tr>
+        <td>${i+1}</td>
+        <td>${r.a1||'<em>Anon</em>'}</td>
+        <td>${r.a2||'—'}</td>
+        <td style="white-space:nowrap">${r.ts}</td>
+        <td>${r.b1||'—'}</td>
+        <td>${r.c2||'—'}</td>
+        <td>${r.e5==='Yes'?'<span style="color:#c09a3c;font-weight:700">Yes ⚠</span>':r.e5||'—'}</td>
+      </tr>`).join('')}
+      </tbody></table>
+    </div></div>`;
+
+  content.innerHTML = html;
+}
+
+function exportCSV() {
+  if (!responses.length) return alert('No responses to export.');
+  const allKeys = ['id','ts','a1','a2','a3','b1','b2','b3','b3b','b4','b4b','b5','b5_why','b6','b7','b8','b8_detail','b9','b9_detail',...likertItems.map(i=>i.key),'c2','d1','d1_other','d2','d3','e1','e1_detail','e2','e3','e4','e5','other_comments'];
+  const header = allKeys.join(',');
+  const rows = responses.map(r => allKeys.map(k => {
+    const v = Array.isArray(r[k]) ? r[k].join('; ') : (r[k]||'');
+    return `"${String(v).replace(/"/g,'""')}"`;
+  }).join(','));
+  const csv = [header,...rows].join('\n');
+  const blob = new Blob([csv],{type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `forensic_results_${Date.now()}.csv`; a.click();
+}
+
+// ── START ─────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
